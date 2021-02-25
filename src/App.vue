@@ -11,5 +11,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+#app {
+  background-color: $gray-100;
+}
 </style>
