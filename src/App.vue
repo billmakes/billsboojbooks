@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <router-view name="nav-header" /> -->
+    <router-view name="nav-header" />
     <b-container class="my-4">
       <router-view />
     </b-container>

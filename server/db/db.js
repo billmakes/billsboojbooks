@@ -55,10 +55,10 @@ const books = [
   },
   {
     id: 7,
-    title: 'A',
-    author: 'BILLTEST',
-    year: '1111',
-    tags: ['data', 'testing'],
+    title: 'Fantastic Mr. Fox',
+    author: 'Roald Dahl',
+    year: '1970',
+    tags: ['animals', 'hunger'],
     read: false,
     readDate: null
   },

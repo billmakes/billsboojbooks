@@ -1,12 +1,7 @@
 <template>
-  <div>
-    <router-link
-      v-for="link in routeLinks"
-      :key="link.name"
-      :to="{ name: link.name }"
-      >{{ link.label }}</router-link
-    >
-  </div>
+  <b-navbar toggleable="lg" type="dark" variant="primary">
+    <b-navbar-brand href="/">My Book List</b-navbar-brand>
+  </b-navbar>
 </template>
 <script>
 import routes from '@/router/routes'

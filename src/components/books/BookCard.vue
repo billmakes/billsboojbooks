@@ -14,13 +14,7 @@
 
       <b-card-text>
         <div v-if="source.tags.length">
-          <b-badge
-            v-for="(tag, index) in source.tags"
-            :key="index"
-            class="mr-1"
-            variant="primary"
-            >{{ tag }}</b-badge
-          >
+          <BookTags :tags="source.tags" />
         </div>
       </b-card-text>
     </b-card>
@@ -28,10 +22,13 @@
 </template>
 <script>
 import BookRead from './shared/BookRead'
+import BookTags from './shared/BookTags'
+
 export default {
   name: 'BookCard',
   components: {
-    BookRead
+    BookRead,
+    BookTags
   },
   props: {
     source: {

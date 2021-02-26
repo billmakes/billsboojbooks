@@ -1,12 +1,17 @@
 <template>
   <div>
-    <b-card v-show="!deleted" class="Book">
+    <b-card class="Book">
       <h3>{{ title }}</h3>
       <h5>{{ author }} - {{ year }}</h5>
-      <div class="Book__Options">
-        <b-button v-b-modal.edit-modal class="Book__Options--Button"
-          >Edit Info</b-button
-        >
+      <BookTags :tags="tags" />
+      <div v-if="description">
+        <p>{{ description }}</p>
+      </div>
+      <div v-else>
+        <b-spinner label="Loading..."></b-spinner>
+      </div>
+      <div class="mt-2">
+        <b-button v-b-modal.edit-modal class="mr-1">Edit Info</b-button>
         <b-button
           v-b-modal.delete-modal
           class="Book__Options--Button"
@@ -89,8 +94,15 @@
 </template>
 <script>
 import BookService from '@/services/'
+import getBookDescription from '@/services/open-library'
+import BookTags from '@/components/books/shared/BookTags'
+const bookFields = ['title', 'author', 'year', 'tags', 'read']
+
 export default {
   name: 'Book',
+  components: {
+    BookTags
+  },
   data() {
     return {
       book: [],
@@ -98,7 +110,8 @@ export default {
       author: '',
       year: '',
       tags: [],
-      read: null
+      read: null,
+      description: null
     }
   },
   props: {
@@ -108,20 +121,17 @@ export default {
   },
   mounted() {
     if (this.source) {
-      this.book = this.source
-      this.title = this.source.title
-      this.author = this.source.author
-      this.year = this.source.year
-      this.tags = this.source.tags
+      this.assignFields(this, this.source)
       this.read = this.source.read || false
+      getBookDescription(this.source.title)
+        .then(desc => (this.description = desc))
+        .catch(
+          () => (this.description = 'No description available at this time.')
+        )
     } else {
       BookService.getBook(this.$route.params.id)
         .then(res => {
-          this.book = res.book
-          this.title = res.book.title
-          this.author = res.book.author
-          this.year = res.book.year
-          this.tags = res.book.tags
+          this.assignFields(this, res.book)
           this.read = res.book.read || false
         })
         .catch(() => {
@@ -141,22 +151,20 @@ export default {
     }
   },
   methods: {
+    assignFields(assignObj, assignee) {
+      bookFields.forEach(field => {
+        assignObj[field] = assignee[field]
+      })
+    },
     cancel() {
       this.$root.$emit('bv::hide::modal', 'edit-modal')
-      this.title = this.book.title
-      this.author = this.book.author
-      this.year = this.book.year
-      this.tags = this.book.tags
-      this.read = this.book.read
+      this.$router.push({ path: '/' })
+      this.assignFields(this, this.book)
     },
     save() {
       this.$root.$emit('bv::hide::modal', 'edit-modal')
       BookService.updateBook(this.$route.params.id, this.params)
-      this.title = this.params.title
-      this.author = this.params.author
-      this.year = this.params.year
-      this.tags = this.params.tags
-      this.read = this.params.read
+      this.assignFields(this, this.params)
     },
     deleteBook() {
       this.$root.$emit('bv::hide::modal', 'delete-modal')

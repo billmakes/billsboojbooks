@@ -82,7 +82,7 @@
     <transition-group
       name="cell"
       tag="div"
-      class="container"
+      class="container mt-2"
       :class="selectedView.value === 'card' ? 'BookItemCardContainer' : ''"
     >
       <div
