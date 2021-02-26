@@ -67,6 +67,11 @@
             trim
           ></b-form-input>
         </b-input-group>
+        <div>
+          <label for="tags-basic">Type a new tag and press enter</label>
+          <b-form-tags input-id="tags-basic" v-model="tags"></b-form-tags>
+          <p class="mt-2">Value: {{ tags }}</p>
+        </div>
         <b-form-checkbox id="readCheckbox" v-model="read" name="readCheckbox">
           Read
         </b-form-checkbox>
@@ -98,6 +103,7 @@ export default {
       title: '',
       author: '',
       year: '',
+      tags: [],
       read: null,
       deleted: false,
       error: false
@@ -110,6 +116,7 @@ export default {
         this.title = res.book.title
         this.author = res.book.author
         this.year = res.book.year
+        this.tags = res.book.tags
         this.read = res.book.read || false
       })
       .catch(() => {
@@ -126,6 +133,7 @@ export default {
         title: this.title,
         author: this.author,
         year: this.year,
+        tags: this.tags,
         read: this.read || false
       }
     }
@@ -136,6 +144,7 @@ export default {
       this.title = this.book.title
       this.author = this.book.author
       this.year = this.book.year
+      this.tags = this.book.tags
       this.read = this.book.read
     },
     save() {
@@ -144,6 +153,7 @@ export default {
       this.title = this.params.title
       this.author = this.params.author
       this.year = this.params.year
+      this.tags = this.params.tags
       this.read = this.params.read
     },
     deleteBook() {

@@ -16,8 +16,14 @@
       </template>
 
       <b-card-text>
-        card
-        {{ `${source.title} by ${source.author} (${source.year})` }}
+        <div v-if="source.tags.length">
+          <b-badge
+            v-for="(tag, index) in source.tags"
+            :key="index"
+            class="mr-1"
+            >{{ tag }}</b-badge
+          >
+        </div>
       </b-card-text>
     </b-card>
   </div>

@@ -53,6 +53,7 @@ class BooksController {
       title: req.body.title,
       author: req.body.author,
       year: req.body.year,
+      tags: req.body.tags,
       read: req.body.read || false,
       readDate: null
     }
@@ -109,6 +110,7 @@ class BooksController {
       title: req.body.title || bookFound.title,
       author: req.body.author || bookFound.author,
       year: req.body.year || bookFound.year,
+      tags: req.body.tags || bookFound.tags,
       read: req.body.read || bookFound.read || false,
       readDate: req.body.readDate || bookFound.readDate || null
     }

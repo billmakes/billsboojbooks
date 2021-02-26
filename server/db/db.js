@@ -4,6 +4,7 @@ const books = [
     title: 'Pride and Prejudice',
     author: 'Jane Austen',
     year: '1813',
+    tags: ['fiction'],
     read: false,
     readDate: null
   },
@@ -12,6 +13,7 @@ const books = [
     title: 'To Kill a Mockingbird',
     author: 'Harper Lee',
     year: '1960',
+    tags: ['fiction', 'classic'],
     read: false,
     readDate: null
   },
@@ -20,6 +22,7 @@ const books = [
     title: 'The Great Gatsby',
     author: 'F. Scott Fitzgerald',
     year: '1925',
+    tags: ['gatsby', 'fiction', 'classic'],
     read: false,
     readDate: null
   },
@@ -28,6 +31,7 @@ const books = [
     title: 'One Hundred Years of Solitude',
     author: 'Gabriel García Márquez',
     year: '1967',
+    tags: [],
     read: false,
     readDate: null
   },
@@ -36,6 +40,7 @@ const books = [
     title: 'In Cold Blood',
     author: 'Truman Capote',
     year: '1965',
+    tags: ['fiction', 'thriller'],
     read: false,
     readDate: null
   },
@@ -44,6 +49,7 @@ const books = [
     title: 'The C Programming Language. 2nd Edition',
     author: 'Brian Kernighan and Dennis Ritchie',
     year: '1978',
+    tags: ['programming', 'technical', 'C'],
     read: false,
     readDate: null
   },
@@ -52,6 +58,7 @@ const books = [
     title: 'A',
     author: 'BILLTEST',
     year: '1111',
+    tags: ['data', 'testing'],
     read: false,
     readDate: null
   },
@@ -60,6 +67,7 @@ const books = [
     title: 'Z',
     author: 'Bill',
     year: '8888',
+    tags: [],
     read: false,
     readDate: null
   },
@@ -68,6 +76,7 @@ const books = [
     title: 'B',
     author: 'Also Bill',
     year: '3333',
+    tags: [],
     read: false,
     readDate: null
   }
