@@ -1,33 +1,25 @@
 <template>
-  <div>
-    <b-card
-      :title="source.title"
-      img-src="https://picsum.photos/600/300/?image=25"
-      :img-alt="`${source.title} by ${source.author}`"
-      img-top
-      tag="article"
-      style="max-width: 20rem"
-      class="m-2"
-    >
-      <b-card-text>
-        Tile
-        {{ `${source.title} by ${source.author} (${source.year})` }}
-      </b-card-text>
-      <div v-if="source.read" class="d-flex justify-content-between">
-        <b-button :href="`book/${source.id}`" variant="primary"
-          >Details</b-button
-        >
-        <div v-if="source.read">
-          Read on {{ source.readDate }}
-          <b-icon icon="check" />
-        </div>
+  <div class="border rounded my-2 p-2">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <span class="font-weight-bold">{{ source.title }}</span>
+        <span>{{ ` by ${source.author} - ${source.year}` }}</span>
       </div>
-    </b-card>
+      <div class="d-flex">
+        <BookRead :source="source" />
+        <b-button :href="`book/${source.id}`" class="ml-2">Details</b-button>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between"></div>
   </div>
 </template>
 <script>
+import BookRead from './shared/BookRead'
 export default {
-  name: 'BookTile',
+  name: 'tile',
+  components: {
+    BookRead
+  },
   props: {
     source: {
       type: Object,
@@ -36,3 +28,5 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+</style>

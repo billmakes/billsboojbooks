@@ -4,8 +4,6 @@
       class="BookCard m-2 shadow-sm"
       :title="source.title"
       :sub-title="`by ${source.author} - ${source.year}`"
-      img-top
-      tag="article"
     >
       <template #header>
         <div class="d-flex justify-content-between align-items-center">

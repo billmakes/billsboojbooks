@@ -88,7 +88,12 @@
       </div>
     </div>
 
-    <transition-group name="cell" tag="div" class="container BookItemContainer">
+    <transition-group
+      name="cell"
+      tag="div"
+      class="container"
+      :class="selectedView.value === 'card' ? 'BookItemCardContainer' : ''"
+    >
       <div
         v-for="book in books"
         :key="book.id"
@@ -212,7 +217,7 @@ export default {
   grid-template-columns: repeat(2, 1fr);
 }
 
-.BookItemContainer {
+.BookItemCardContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   @media (max-width: $medium) {
