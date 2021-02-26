@@ -70,7 +70,6 @@
         <div>
           <label for="tags-basic">Type a new tag and press enter</label>
           <b-form-tags input-id="tags-basic" v-model="tags"></b-form-tags>
-          <p class="mt-2">Value: {{ tags }}</p>
         </div>
         <b-form-checkbox id="readCheckbox" v-model="read" name="readCheckbox">
           Read
@@ -109,25 +108,36 @@ export default {
       error: false
     }
   },
+  props: {
+    source: {
+      type: Object
+    }
+  },
   mounted() {
-    BookService.getBook(this.$route.params.id)
-      .then(res => {
-        this.book = res.book
-        this.title = res.book.title
-        this.author = res.book.author
-        this.year = res.book.year
-        this.tags = res.book.tags
-        this.read = res.book.read || false
-      })
-      .catch(() => {
-        this.deleted = true
-        this.error = true
-      })
+    if (this.source) {
+      this.book = this.source
+      this.title = this.source.title
+      this.author = this.source.author
+      this.year = this.source.year
+      this.tags = this.source.tags
+      this.read = this.source.read || false
+    } else {
+      BookService.getBook(this.$route.params.id)
+        .then(res => {
+          this.book = res.book
+          this.title = res.book.title
+          this.author = res.book.author
+          this.year = res.book.year
+          this.tags = res.book.tags
+          this.read = res.book.read || false
+        })
+        .catch(() => {
+          this.deleted = true
+          this.error = true
+        })
+    }
   },
   computed: {
-    fullName() {
-      return `${this.firstName} ${this.lastName}`
-    },
     params() {
       return {
         title: this.title,
@@ -159,6 +169,7 @@ export default {
     deleteBook() {
       this.$root.$emit('bv::hide::modal', 'delete-modal')
       this.deleted = true
+      this.$router.push({ path: '/' })
       BookService.deleteBook(this.$route.params.id)
     }
   }

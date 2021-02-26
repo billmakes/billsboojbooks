@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>My Books</h1>
     <div class="d-flex justify-content-between">
       <b-form-group class="mr-3 mb-0">
         <b-form-radio-group
@@ -20,24 +19,16 @@
           /></b-form-radio>
         </b-form-radio-group>
       </b-form-group>
-      <b-button v-b-toggle.filter-bar>View Filters</b-button>
+      <div>
+        <b-button class="mr-2" variant="primary" @click="addBook"
+          >Add Book</b-button
+        >
+        <b-button v-b-toggle.filter-bar>View Filters</b-button>
+      </div>
     </div>
     <div>
       <b-sidebar id="filter-bar" title="Filters" width="30em" shadow backdrop>
         <div class="px-3 py-2">
-          <b-input-group class="mb-2">
-            <b-input-group-prepend is-text>
-              <b-icon icon="search"></b-icon>
-            </b-input-group-prepend>
-            <b-form-input
-              id="searchInput"
-              type="text"
-              label="search"
-              v-model="term"
-              placeholder="Search..."
-              trim
-            ></b-form-input>
-          </b-input-group>
           <div class="FilterBar">
             <b-button
               v-for="filter in filters"
@@ -144,7 +135,6 @@ export default {
   data() {
     return {
       books: null,
-      term: null,
       selectedView: viewOptions[0],
       viewOptions,
       filters,
@@ -160,6 +150,9 @@ export default {
     }
   },
   methods: {
+    addBook() {
+      this.$router.push({ path: '/add-book' })
+    },
     getBooks() {
       BookService.getAllBooks().then(res => {
         this.books = res.books

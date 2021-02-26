@@ -42,12 +42,8 @@ class BooksController {
         success: 'false',
         message: 'book year is required'
       })
-    } else if (!req.body.read) {
-      return res.status(400).send({
-        success: 'false',
-        message: 'book read status is required'
-      })
     }
+
     const book = {
       id: db.length + 1,
       title: req.body.title,

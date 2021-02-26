@@ -15,9 +15,19 @@ export default [
     }
   },
   {
+    path: '/add-book/',
+    name: 'add-book',
+    components: {
+      default: () => import('@/components/views/AddBook'),
+      ...fullLayout
+    }
+  },
+  {
     path: '/book/:id',
     name: 'book',
-    props: true,
+    props: {
+      default: true
+    },
     components: {
       default: () => import('@/components/views/BookDetails'),
       ...fullLayout
