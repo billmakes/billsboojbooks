@@ -1,8 +1,11 @@
 <template>
   <div>
-    <b-card class="Book">
-      <h3>{{ title }}</h3>
-      <h5>{{ author }} - {{ year }}</h5>
+    <b-card class="Book" v-if="book">
+      <div>
+        <h3>{{ title }}</h3>
+        <h5>{{ author }} - {{ year }}</h5>
+        <div v-if="bookRead"><BookRead :source="params" /></div>
+      </div>
       <BookTags :tags="tags" />
       <div v-if="description">
         <p>{{ description }}</p>
@@ -96,16 +99,18 @@
 import BookService from '@/services/'
 import getBookDescription from '@/services/open-library'
 import BookTags from '@/components/books/shared/BookTags'
-const bookFields = ['title', 'author', 'year', 'tags', 'read']
+import BookRead from '@/components/books/shared/BookRead'
+const bookFields = ['title', 'author', 'year', 'tags', 'read', 'readDate']
 
 export default {
   name: 'Book',
   components: {
-    BookTags
+    BookTags,
+    BookRead
   },
   data() {
     return {
-      book: [],
+      book: null,
       title: '',
       author: '',
       year: '',
@@ -121,6 +126,7 @@ export default {
   },
   mounted() {
     if (this.source) {
+      this.book = this.source
       this.assignFields(this, this.source)
       this.read = this.source.read || false
       getBookDescription(this.source.title)
@@ -131,6 +137,7 @@ export default {
     } else {
       BookService.getBook(this.$route.params.id)
         .then(res => {
+          this.book = res.book
           this.assignFields(this, res.book)
           this.read = res.book.read || false
         })
@@ -140,13 +147,17 @@ export default {
     }
   },
   computed: {
+    bookRead() {
+      return this.book.read
+    },
     params() {
       return {
         title: this.title,
         author: this.author,
         year: this.year,
         tags: this.tags,
-        read: this.read || false
+        read: this.read || false,
+        readDate: this.readDate
       }
     }
   },
@@ -164,6 +175,7 @@ export default {
     save() {
       this.$root.$emit('bv::hide::modal', 'edit-modal')
       BookService.updateBook(this.$route.params.id, this.params)
+      this.$router.push({ path: '/' })
       this.assignFields(this, this.params)
     },
     deleteBook() {
