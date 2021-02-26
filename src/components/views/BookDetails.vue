@@ -181,7 +181,8 @@ export default {
     deleteBook() {
       this.$root.$emit('bv::hide::modal', 'delete-modal')
       this.$router.push({ path: '/' })
-      BookService.deleteBook(this.$route.params.id)
+      let id = this.$route.params.id || this.source.id
+      BookService.deleteBook(id)
     }
   }
 }

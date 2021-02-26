@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-catch */
 import instance from '@/http'
 
-const endpoint = '/api/v1/books/'
+const endpoint = 'https://booklistbooj.herokuapp.com/api/v1/books/'
 
 export default class BookService {
   static async getAllBooks() {
