@@ -10,11 +10,8 @@
     >
       <template #header>
         <div class="d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">
-            <b-icon :icon="source.read ? 'book-fill' : 'book'" />
-          </h4>
-          <BookRead v-if="source.read" :read-date="source.readDate" />
-          <b-button :href="`book/${source.id}`">Details</b-button>
+          <BookRead :source="source" />
+          <b-button :href="`book/${source.id}`" class="ml-2">Details</b-button>
         </div>
       </template>
 
