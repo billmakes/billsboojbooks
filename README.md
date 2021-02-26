@@ -5,6 +5,11 @@
 yarn install
 ```
 
+### Starts the express server
+```
+yarn start
+```
+
 ### Compiles and hot-reloads for development
 ```
 yarn serve
