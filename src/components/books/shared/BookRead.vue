@@ -35,12 +35,13 @@ export default {
   data() {
     return {
       showReadOption: false,
-      markedRead: null
+      markedRead: null,
+      readDate: null
     }
   },
   computed: {
     computedDate() {
-      var readDate = new Date(this.source.readDate)
+      var readDate = new Date(this.readDate || this.source.readDate)
       var dd = String(readDate.getDate()).padStart(2, '0')
       var mm = String(readDate.getMonth() + 1).padStart(2, '0') //January is 0!
       var yyyy = readDate.getFullYear()
@@ -52,6 +53,7 @@ export default {
     markRead() {
       const { id, author, title, year } = this.source
       this.markedRead = true
+      this.readDate = new Date()
       BookService.updateBook(id, {
         author,
         title,

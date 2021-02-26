@@ -20,13 +20,14 @@
           /></b-form-radio>
         </b-form-radio-group>
       </b-form-group>
-      <div>
-        <span v-if="selectedFilter">
-          Current filter: {{ selectedFilter.label }} -
-          {{
-            selectedFilter.value === 'asc' ? 'Ascending' : 'Descending'
-          }}</span
-        >
+      <div class="d-flex align-items-center">
+        <div v-if="selectedFilter" class="border rounded bg-white p-2">
+          <span class="font-weight-bold"> Current filter: </span>
+          <span>
+            {{ selectedFilter.label }} -
+            {{ selectedFilter.value === 'asc' ? 'Ascending' : 'Descending' }}
+          </span>
+        </div>
         <b-button
           v-for="filter in filters"
           class="ml-2"
@@ -45,6 +46,13 @@
             :icon="filter.value === 'asc' ? filter.iconAsc : filter.iconDesc"
           />
         </b-button>
+        <b-button
+          class="ml-2"
+          @click="hideRead = !hideRead"
+          :variant="hideRead ? 'warning' : ''"
+          ><span>{{ hideRead ? 'Show Read' : 'Hide Read' }}</span>
+          <b-icon class="ml-1" :icon="hideRead ? 'eye' : 'eye-slash'"
+        /></b-button>
         <b-button class="ml-2" variant="danger" @click="clearFilters"
           >Clear Filters</b-button
         >
@@ -56,6 +64,7 @@
         :source="book"
         :view="selectedView.value"
         :key="book.id"
+        v-show="!hideRead || (hideRead && !book.read)"
       />
     </div>
   </div>
@@ -86,7 +95,7 @@ const filters = [
   },
   {
     field: 'year',
-    label: 'Year published',
+    label: 'Year Published',
     value: null,
     iconAsc: 'sort-numeric-down',
     iconDesc: 'sort-numeric-up'
@@ -102,7 +111,8 @@ export default {
       books: null,
       selectedView: viewOptions[0],
       viewOptions,
-      filters
+      filters,
+      hideRead: false
     }
   },
   created() {

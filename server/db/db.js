@@ -31,7 +31,7 @@ const books = [
     title: 'One Hundred Years of Solitude',
     author: 'Gabriel García Márquez',
     year: '1967',
-    tags: [],
+    tags: ['lonely', 'classic'],
     read: false,
     readDate: null
   },

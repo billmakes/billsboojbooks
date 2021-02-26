@@ -21,6 +21,7 @@
             v-for="(tag, index) in source.tags"
             :key="index"
             class="mr-1"
+            variant="primary"
             >{{ tag }}</b-badge
           >
         </div>
