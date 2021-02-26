@@ -1,12 +1,11 @@
 <template>
   <div>
     <b-card
+      class="BookCard m-2 shadow-sm"
       :title="source.title"
       :sub-title="`by ${source.author} - ${source.year}`"
       img-top
       tag="article"
-      style="max-width: 20rem"
-      class="m-2 shadow-sm"
     >
       <template #header>
         <div class="d-flex justify-content-between align-items-center">
@@ -44,3 +43,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.BookCard {
+  height: 225px;
+}
+</style>

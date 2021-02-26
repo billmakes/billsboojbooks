@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <router-view name="nav-header" />
-    <router-view />
+    <b-container>
+      <router-view />
+    </b-container>
   </div>
 </template>
 
@@ -14,7 +16,7 @@ export default {
 <style lang="scss">
 @import '~bootstrap/scss/_functions.scss';
 @import '~bootstrap/scss/_variables.scss';
-#app {
+body {
   background-color: $gray-100;
 }
 </style>

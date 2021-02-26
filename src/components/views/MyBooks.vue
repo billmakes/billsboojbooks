@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>My Books</h1>
-    <div class="d-flex">
+    <div class="d-flex justify-content-between">
       <b-form-group class="mr-3 mb-0">
         <b-form-radio-group
           id="selectedView-radio1"
@@ -20,53 +20,83 @@
           /></b-form-radio>
         </b-form-radio-group>
       </b-form-group>
-      <div class="d-flex align-items-center">
-        <div v-if="selectedFilter" class="border rounded bg-white p-2">
-          <span class="font-weight-bold"> Current filter: </span>
+      <b-button v-b-toggle.filter-bar>View Filters</b-button>
+    </div>
+    <div>
+      <b-sidebar id="filter-bar" title="Filters" width="30em" shadow backdrop>
+        <div class="px-3 py-2">
+          <b-input-group class="mb-2">
+            <b-input-group-prepend is-text>
+              <b-icon icon="search"></b-icon>
+            </b-input-group-prepend>
+            <b-form-input
+              id="searchInput"
+              type="text"
+              label="search"
+              v-model="term"
+              placeholder="Search..."
+              trim
+            ></b-form-input>
+          </b-input-group>
+          <div class="FilterBar">
+            <b-button
+              v-for="filter in filters"
+              class="ml-2"
+              :key="filter.field"
+              @click="changeFilter(filter)"
+              :variant="filter.value ? 'primary' : ''"
+            >
+              <span>{{ filter.label }}</span>
+              <span v-if="filter.field === 'year' && filter.value">{{
+                filter.value === 'asc' ? ': Oldest' : ': Newest'
+              }}</span>
+
+              <b-icon
+                v-if="filter.value"
+                class="ml-1"
+                :icon="
+                  filter.value === 'asc' ? filter.iconAsc : filter.iconDesc
+                "
+              />
+            </b-button>
+            <b-button
+              class="ml-2"
+              @click="hideRead = !hideRead"
+              :variant="hideRead ? 'warning' : ''"
+              ><span>{{ hideRead ? 'Show Read' : 'Hide Read' }}</span>
+              <b-icon class="ml-1" :icon="hideRead ? 'eye' : 'eye-slash'"
+            /></b-button>
+          </div>
+        </div>
+      </b-sidebar>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+      <div
+        v-if="selectedFilter"
+        class="border rounded bg-white p-2 mt-2 d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <span class="font-weight-bold w-100"> Current filter: </span>
           <span>
             {{ selectedFilter.label }} -
             {{ selectedFilter.value === 'asc' ? 'Ascending' : 'Descending' }}
           </span>
         </div>
-        <b-button
-          v-for="filter in filters"
-          class="ml-2"
-          :key="filter.field"
-          @click="changeFilter(filter)"
-          :variant="filter.value ? 'primary' : ''"
-        >
-          <span>{{ filter.label }}</span>
-          <span v-if="filter.field === 'year' && filter.value">{{
-            filter.value === 'asc' ? ': Oldest' : ': Newest'
-          }}</span>
-
-          <b-icon
-            v-if="filter.value"
-            class="ml-1"
-            :icon="filter.value === 'asc' ? filter.iconAsc : filter.iconDesc"
-          />
-        </b-button>
-        <b-button
-          class="ml-2"
-          @click="hideRead = !hideRead"
-          :variant="hideRead ? 'warning' : ''"
-          ><span>{{ hideRead ? 'Show Read' : 'Hide Read' }}</span>
-          <b-icon class="ml-1" :icon="hideRead ? 'eye' : 'eye-slash'"
-        /></b-button>
-        <b-button class="ml-2" variant="danger" @click="clearFilters"
-          >Clear Filters</b-button
+        <b-button class="ml-2" variant="danger" @click="clearFilter"
+          >Clear Filter</b-button
         >
       </div>
     </div>
-    <div v-if="books" class="d-flex flex-wrap">
-      <BookController
+
+    <transition-group name="cell" tag="div" class="container BookItemContainer">
+      <div
         v-for="book in books"
-        :source="book"
-        :view="selectedView.value"
         :key="book.id"
         v-show="!hideRead || (hideRead && !book.read)"
-      />
-    </div>
+      >
+        <BookController :source="book" :view="selectedView.value" />
+      </div>
+    </transition-group>
   </div>
 </template>
 <script>
@@ -109,6 +139,7 @@ export default {
   data() {
     return {
       books: null,
+      term: null,
       selectedView: viewOptions[0],
       viewOptions,
       filters,
@@ -129,7 +160,8 @@ export default {
         this.books = res.books
       })
     },
-    clearFilters() {
+    clearFilter() {
+      this.hideRead = false
       this.filters.forEach(f => {
         f.value = null
       })
@@ -171,3 +203,27 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import '../../styles/_breakpoints.scss';
+
+.FilterBar {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.BookItemContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  @media (max-width: $medium) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: $small) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.cell-move {
+  transition: transform 0.5s;
+}
+</style>

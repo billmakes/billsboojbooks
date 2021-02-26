@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex align-items-center justify-content-between">
-    <template v-if="markedRead || source.read">
+    <template v-if="source.read">
       <b-icon class="mb-0 mr-1 h3" icon="check" variant="success" />
 
-      <div v-if="markedRead || source.read">Read on {{ computedDate }}</div>
+      <div v-if="source.read">Read on {{ computedDate }}</div>
     </template>
     <template v-else>
       <div
@@ -52,8 +52,8 @@ export default {
   methods: {
     markRead() {
       const { id, author, title, year } = this.source
-      this.markedRead = true
-      this.readDate = new Date()
+      this.source.read = true
+      this.source.readDate = new Date()
       BookService.updateBook(id, {
         author,
         title,
