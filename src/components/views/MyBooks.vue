@@ -1,5 +1,13 @@
 <template>
   <div>
+    <b-alert variant="primary" :show="!books.length"
+      >You have no books added to your list. Click the Add Book button to begin
+      adding entries.</b-alert
+    >
+    <b-alert variant="danger" :show="books.length === 1">
+      <b-icon icon="chat-right-quote" />
+      Beware of the person of one book. -- Thomas Aquinas</b-alert
+    >
     <div class="d-flex justify-content-between">
       <b-form-group class="mr-3 mb-0">
         <b-form-radio-group
