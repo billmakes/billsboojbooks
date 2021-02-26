@@ -32,15 +32,15 @@ export default [
       default: () => import('@/components/views/BookDetails'),
       ...fullLayout
     }
-  }
+  },
 
-  //   {
-  //     path: '*',
-  //     name: 'wild',
-  //     component: () =>
-  //       import(/* webpackChunkName: "error" */ '@/router/views/Error'),
-  //     props: {
-  //       code: 'notFound'
-  //     }
-  //   }
+  {
+    path: '*',
+    name: 'wild',
+    component: () =>
+      import(/* webpackChunkName: "error" */ '@/components/views/Error'),
+    props: {
+      code: 'notFound'
+    }
+  }
 ]

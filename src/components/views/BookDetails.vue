@@ -15,11 +15,6 @@
         >
       </div>
     </b-card>
-    <div v-show="deleted">
-      <h1 v-if="error">404</h1>
-      <p>This book record either does not exist or it may have been deleted.</p>
-      <router-link to="/">Click here to go back home.</router-link>
-    </div>
     <b-modal id="edit-modal" title="BootstrapVue">
       <template slot="modal-header">
         <h5>Edit Book Record</h5>
@@ -103,9 +98,7 @@ export default {
       author: '',
       year: '',
       tags: [],
-      read: null,
-      deleted: false,
-      error: false
+      read: null
     }
   },
   props: {
@@ -132,8 +125,7 @@ export default {
           this.read = res.book.read || false
         })
         .catch(() => {
-          this.deleted = true
-          this.error = true
+          this.$router.push({ name: 'wild' })
         })
     }
   },
@@ -168,7 +160,6 @@ export default {
     },
     deleteBook() {
       this.$root.$emit('bv::hide::modal', 'delete-modal')
-      this.deleted = true
       this.$router.push({ path: '/' })
       BookService.deleteBook(this.$route.params.id)
     }
