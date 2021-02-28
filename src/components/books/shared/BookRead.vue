@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import BookService from '@/services/'
+import { BookStore } from '@/composables/book-provider.js'
 
 export default {
   name: 'BookRead',
@@ -36,7 +36,8 @@ export default {
     return {
       showReadOption: false,
       markedRead: null,
-      readDate: null
+      readDate: null,
+      BookStore
     }
   },
   computed: {
@@ -51,14 +52,10 @@ export default {
   },
   methods: {
     markRead() {
-      const { id, author, title, year } = this.source
-      this.source.read = true
-      this.source.readDate = new Date()
-      BookService.updateBook(id, {
-        author,
-        title,
-        year,
-        read: true
+      this.BookStore.editBook(this.source.id, {
+        ...this.source,
+        read: true,
+        readDate: new Date()
       })
     }
   }

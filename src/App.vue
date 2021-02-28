@@ -8,8 +8,13 @@
 </template>
 
 <script>
+import { BookStore } from '@/composables/book-provider.js'
+
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    BookStore.init()
+  }
 }
 </script>
 

@@ -96,11 +96,11 @@
   </div>
 </template>
 <script>
-import BookService from '@/services/'
 import getBookDescription from '@/services/open-library'
 import BookTags from '@/components/books/shared/BookTags'
 import BookRead from '@/components/books/shared/BookRead'
 const bookFields = ['title', 'author', 'year', 'tags', 'read', 'readDate']
+import { BookStore } from '@/composables/book-provider.js'
 
 export default {
   name: 'Book',
@@ -125,26 +125,17 @@ export default {
     }
   },
   mounted() {
-    if (this.source) {
-      this.book = this.source
-      this.assignFields(this, this.source)
-      this.read = this.source.read || false
-      getBookDescription(this.source.title)
+    BookStore.getBook(
+      (this.source && this.source.id) || this.$route.params.id
+    ).then(book => {
+      this.book = book
+      this.assignFields(this, book)
+      getBookDescription(book.title)
         .then(desc => (this.description = desc))
         .catch(
           () => (this.description = 'No description available at this time.')
         )
-    } else {
-      BookService.getBook(this.$route.params.id)
-        .then(res => {
-          this.book = res.book
-          this.assignFields(this, res.book)
-          this.read = res.book.read || false
-        })
-        .catch(() => {
-          this.$router.push({ name: 'wild' })
-        })
-    }
+    })
   },
   computed: {
     bookRead() {
@@ -170,19 +161,17 @@ export default {
     cancel() {
       this.$root.$emit('bv::hide::modal', 'edit-modal')
       this.$router.push({ path: '/' })
-      this.assignFields(this, this.book)
     },
     save() {
       this.$root.$emit('bv::hide::modal', 'edit-modal')
-      BookService.updateBook(this.$route.params.id, this.params)
+      BookStore.editBook(this.$route.params.id, this.params)
       this.$router.push({ path: '/' })
-      this.assignFields(this, this.params)
     },
     deleteBook() {
       this.$root.$emit('bv::hide::modal', 'delete-modal')
       this.$router.push({ path: '/' })
       let id = this.$route.params.id || this.source.id
-      BookService.deleteBook(id)
+      BookStore.removeBook(id)
     }
   }
 }

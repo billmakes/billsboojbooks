@@ -61,7 +61,8 @@
   </div>
 </template>
 <script>
-import BookService from '@/services/'
+import { BookStore } from '@/composables/book-provider.js'
+
 export default {
   name: 'AddBook',
   data() {
@@ -89,7 +90,7 @@ export default {
       this.$router.push({ path: '/' })
     },
     save() {
-      BookService.addBook(this.params)
+      BookStore.addBook(this.params)
       this.$router.push({ path: '/' })
     }
   }

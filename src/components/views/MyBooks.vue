@@ -102,12 +102,13 @@
       >
         <BookController :source="book" :view="selectedView.value" />
       </div>
+      BookStore.books
     </transition-group>
   </div>
 </template>
 <script>
-import BookService from '@/services'
 import BookController from '@/components/books/BookController'
+import { BookStore } from '@/composables/book-provider.js'
 
 const viewOptions = [
   { value: 'card', icon: 'grid-3x3-gap-fill' },
@@ -144,30 +145,26 @@ export default {
   },
   data() {
     return {
-      books: null,
       selectedView: viewOptions[0],
       viewOptions,
       filters,
-      hideRead: false
+      hideRead: false,
+      BookStore
     }
-  },
-  created() {
-    this.getBooks()
   },
   computed: {
     selectedFilter() {
       return this.filters.find(filter => filter.value)
+    },
+    books() {
+      return BookStore.getBooks.value
     }
   },
   methods: {
     addBook() {
       this.$router.push({ path: '/add-book' })
     },
-    getBooks() {
-      BookService.getAllBooks().then(res => {
-        this.books = res.books
-      })
-    },
+
     clearFilter() {
       this.hideRead = false
       this.filters.forEach(f => {
@@ -180,30 +177,16 @@ export default {
       })
       if (!filter.value) {
         filter.value = 'asc'
-        this.filterAsc(filter.field)
+        BookStore.filterAsc(filter.field)
         return
       }
       if (filter.value === 'asc') {
         filter.value = 'desc'
-        this.filterDesc(filter.field)
+        BookStore.filterDesc(filter.field)
       } else {
         filter.value = 'asc'
-        this.filterAsc(filter.field)
+        BookStore.filterAsc(filter.field)
       }
-    },
-    filterAsc(field) {
-      this.books = this.books.sort(function (a, b) {
-        var textA = a[field].toUpperCase()
-        var textB = b[field].toUpperCase()
-        return textA < textB ? -1 : textA > textB ? 1 : 0
-      })
-    },
-    filterDesc(field) {
-      this.books = this.books.sort(function (a, b) {
-        var textA = a[field].toUpperCase()
-        var textB = b[field].toUpperCase()
-        return textA > textB ? -1 : textA < textB ? 1 : 0
-      })
     },
     viewSelectVariant(option) {
       return this.selectedView === option ? 'primary' : 'none'
