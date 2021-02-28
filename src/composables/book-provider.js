@@ -25,7 +25,6 @@ async function getBook(id) {
   else
     return BookService.getBook(id)
       .then(res => {
-        console.log(res.book)
         return res.book
       })
       .catch(() => {

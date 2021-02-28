@@ -109,35 +109,8 @@
 <script>
 import BookController from '@/components/books/BookController'
 import { BookStore } from '@/composables/book-provider.js'
+import { Filters } from '@/composables/filter-provider.js'
 
-const viewOptions = [
-  { value: 'card', icon: 'grid-3x3-gap-fill' },
-  { value: 'tile', icon: 'list-ul' }
-]
-
-const filters = [
-  {
-    field: 'title',
-    label: 'Title',
-    value: null,
-    iconAsc: 'sort-alpha-down',
-    iconDesc: 'sort-alpha-up'
-  },
-  {
-    field: 'author',
-    label: 'Author',
-    value: null,
-    iconAsc: 'sort-alpha-down',
-    iconDesc: 'sort-alpha-up'
-  },
-  {
-    field: 'year',
-    label: 'Year Published',
-    value: null,
-    iconAsc: 'sort-numeric-down',
-    iconDesc: 'sort-numeric-up'
-  }
-]
 export default {
   name: 'MyBooks',
   components: {
@@ -145,51 +118,24 @@ export default {
   },
   data() {
     return {
-      selectedView: viewOptions[0],
-      viewOptions,
-      filters,
-      hideRead: false,
+      viewSelectVariant: Filters.viewSelectVariant,
+      changeFilter: Filters.changeFilter,
+      clearFilter: Filters.clearFilter,
+      ...Filters.state,
       BookStore
     }
   },
   computed: {
-    selectedFilter() {
-      return this.filters.find(filter => filter.value)
-    },
     books() {
       return BookStore.getBooks.value
+    },
+    selectedFilter() {
+      return Filters.selectedFilter.value
     }
   },
   methods: {
     addBook() {
       this.$router.push({ path: '/add-book' })
-    },
-
-    clearFilter() {
-      this.hideRead = false
-      this.filters.forEach(f => {
-        f.value = null
-      })
-    },
-    changeFilter(filter) {
-      this.filters.forEach(f => {
-        if (f.field !== filter.field) f.value = null
-      })
-      if (!filter.value) {
-        filter.value = 'asc'
-        BookStore.filterAsc(filter.field)
-        return
-      }
-      if (filter.value === 'asc') {
-        filter.value = 'desc'
-        BookStore.filterDesc(filter.field)
-      } else {
-        filter.value = 'asc'
-        BookStore.filterAsc(filter.field)
-      }
-    },
-    viewSelectVariant(option) {
-      return this.selectedView === option ? 'primary' : 'none'
     }
   }
 }
