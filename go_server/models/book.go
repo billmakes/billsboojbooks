@@ -1,39 +1,32 @@
 package models
 
 import (
-	"fmt"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 //Book
 type Book struct {
-	ID       string    `json:"id"`
+	ID       uint      `json:"id" gorm:"primary_key"`
 	Title    string    `json:"title"`
 	Author   string    `json:"author"`
 	Year     string    `json:"year"`
-	Tags     []string  `json:"tags"`
+	Tags     []Tag     `json:"tags" gorm:"ForeignKey:UserID"`
 	Read     bool      `json:"read"`
 	ReadDate time.Time `json:"readDate"`
 }
 
-// Update the book
-func (b *Book) UpdateBook(updatedBook *Book) Book {
-	fmt.Println("value of b: ", b)
-	fmt.Println("value of updatedBook: ", updatedBook)
-	if updatedBook.Author != "" {
-		b.Author = updatedBook.Author
-	}
+//Tags
+type Tag struct {
+	Title  string
+	BookID uint `gorm:"column:book_id"`
+}
 
-	b.Read = updatedBook.Read
+// Tester
 
-	if updatedBook.Tags != nil {
-		b.Tags = updatedBook.Tags
-	}
-	if updatedBook.Title != "" {
-		b.Title = updatedBook.Title
-	}
-	if updatedBook.Year != "" {
-		b.Year = updatedBook.Year
-	}
-	return *b
+type Tester struct {
+	gorm.Model
+	Name   string
+	BookID uint
 }

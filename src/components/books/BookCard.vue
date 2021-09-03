@@ -13,7 +13,7 @@
       </template>
 
       <b-card-text>
-        <div v-if="source.tags.length">
+        <div v-if="source.tags && source.tags.length">
           <BookTags :tags="source.tags" />
         </div>
       </b-card-text>

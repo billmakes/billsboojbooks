@@ -137,9 +137,9 @@ export default {
     } else {
       BookService.getBook(this.$route.params.id)
         .then(res => {
-          this.book = res.book
-          this.assignFields(this, res.book)
-          this.read = res.book.read || false
+          this.book = res.data
+          this.assignFields(this, res.data)
+          this.read = res.data.read || false
         })
         .catch(() => {
           this.$router.push({ name: 'wild' })
