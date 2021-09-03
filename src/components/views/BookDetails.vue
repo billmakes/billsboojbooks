@@ -174,15 +174,17 @@ export default {
     },
     save() {
       this.$root.$emit('bv::hide::modal', 'edit-modal')
-      BookService.updateBook(this.$route.params.id, this.params)
-      this.$router.push({ path: '/' })
-      this.assignFields(this, this.params)
+      BookService.updateBook(this.$route.params.id, this.params).then(() => {
+        this.assignFields(this, this.params)
+        this.$router.push({ path: '/' })
+      })
     },
     deleteBook() {
       this.$root.$emit('bv::hide::modal', 'delete-modal')
-      this.$router.push({ path: '/' })
       let id = this.$route.params.id || this.source.id
-      BookService.deleteBook(id)
+      BookService.deleteBook(id).then(() => {
+        this.$router.push({ path: '/' })
+      })
     }
   }
 }

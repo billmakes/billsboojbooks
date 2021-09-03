@@ -7,6 +7,7 @@ export default class BookService {
   static async getAllBooks() {
     try {
       const source = await instance.get(endpoint)
+      console.log(source.data)
       return source.data
     } catch (error) {
       throw error
@@ -33,6 +34,7 @@ export default class BookService {
 
   static async updateBook(id, params) {
     try {
+      console.log(endpoint + id)
       await instance.put(endpoint + id, params)
     } catch (error) {
       throw error

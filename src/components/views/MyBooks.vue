@@ -165,7 +165,7 @@ export default {
     },
     getBooks() {
       BookService.getAllBooks().then(res => {
-        this.books = res.books
+        this.books = res.books 
       })
     },
     clearFilter() {

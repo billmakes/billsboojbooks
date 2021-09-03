@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "vue-cli-service serve --port=8080",
     "start": "node_modules/.bin/nodemon ./server/app.js --exec babel-node --",
     "serve": "concurrently --raw \"vue-cli-service serve --port=8080\" \"yarn start\"",
     "build": "vue-cli-service build",
