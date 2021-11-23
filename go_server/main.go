@@ -1,10 +1,12 @@
 package main
 
 import (
-	"go-books/controllers"
+	"database/sql"
 	"go-books/models"
+	"log"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func CORSMiddleware() gin.HandlerFunc {
@@ -23,19 +25,37 @@ func CORSMiddleware() gin.HandlerFunc {
 	}
 }
 
+func Check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func CheckId(result int64, err error) int64 {
+	if err != nil {
+		log.Fatal(err)
+	}
+	return result
+}
+
 func main() {
 	router := gin.Default()
 
 	router.Use(CORSMiddleware())
 
 	// Connect to database
-	models.ConnectDatabase()
+	db, err := sql.Open("sqlite3", "test.db")
 
-	router.GET("/api/v1/books/", controllers.FindBooks)
-	router.GET("/api/v1/books/:id", controllers.FindBook)
-	router.POST("/api/v1/books/", controllers.CreateBook)
-	router.PUT("/api/v1/books/:id", controllers.UpdateBook)
-	router.DELETE("api/v1/books/:id", controllers.DeleteBook)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	CheckId(models.DBAddBook(db, "Bill", "Testing", []string{"Space"}))
+	//router.get("/api/v1/books/", controllers.findbooks)
+	//router.get("/api/v1/books/:id", controllers.findbook)
+	//router.post("/api/v1/books/", controllers.createbook)
+	//router.put("/api/v1/books/:id", controllers.updatebook)
+	//router.delete("api/v1/books/:id", controllers.deletebook)
 
 	router.Run(":5000")
 }
